@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;400;700&display=swap');
+
+
 .App {
   text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: scroll;
+  background: lightyellow;
 }
 
 .App-logo {
@@ -35,4 +45,48 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.messageOutput {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 50vw;
+  transform: translate(-150px, 0);
+  font-family: "Raleway";
+  font-weight: 400;
+  font-size: 200%;
+}
+
+.messageOutput * {
+  align-items: center;
+  min-width: 300px;
+}
+
+.morseOutput {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 50vw;
+  transform: translate(-150px, 0);
+}
+
+.morseOutput * {
+  align-items: center;
+  min-width: 300px;
+}
+
+.info {
+  position: fixed;
+  margin-left: 50vw; 
+  margin-top: -20vh;
+  width: 400px;
+  transform: translate(-200px, 0);
+  background-color: gray;
+}
+
+.info * {
+  height: 40px;
 }
