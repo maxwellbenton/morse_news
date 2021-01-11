@@ -49,19 +49,12 @@ function App() {
   const [message, setMessage] = useState(splitMessageIntoWords(defaultMessage))
   const [convertedMessage, setConvertedMessage] = useState(convertToMorse(defaultMessage))
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [currentPointIndex, setCurrentPointIndex] = useState(0)
+  const [currentPointIndex, setCurrentPointIndex] = useState(-1)
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPointIndex(oldIndex => oldIndex + 1);
-    }, 1000)
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [])
-
-  useEffect(() => {
+    if (convertedMessage[currentPointIndex] === dot) document.getElementById('dot').play()
+    if (convertedMessage[currentPointIndex] === dash) document.getElementById('dash').play()
     if (convertedMessage[currentPointIndex] === "_") {
       setCurrentWordIndex(oldIndex => oldIndex + 1);
     }
@@ -73,6 +66,12 @@ function App() {
       behavior: 'smooth'
     }) 
   }, [currentWordIndex])
+
+  useEffect(() => {
+    if (document.getElementById('point')) {
+      document.getElementById('point').classList.add('fade')
+    } 
+  })
 
   function convertToMorse(string) {
     let a = string.split('').reduce((morseConversion, currentChar) => {
@@ -108,13 +107,43 @@ function App() {
     }
   }  
 
+  function handleClick() {
+    let interval
+    if (active === false) {
+      interval = setInterval(() => {
+        setCurrentPointIndex(oldIndex => oldIndex + 1);
+      }, 350)
+    } else {
+      console.log('hi')
+      clearInterval(interval);
+      setCurrentPointIndex(-1);
+    }
+    setActive(prev => !prev)
+  }
+
+  function displayCurrentPoint() {
+    if (convertedMessage[currentPointIndex] === "_") {
+      return <span className="point">{" "}</span>
+    } else {
+      return <span className="point">{convertedMessage[currentPointIndex]}</span>
+    }
+  }
+
+
   return (
     <div className="App">
       <div className="info">
-        <span>{convertedMessage[currentPointIndex]}</span>
+        <button onClick={handleClick}>{active ? "Stop" : "Start"}</button>
+        <div className="pointDisplay">{displayCurrentPoint()}</div>
       </div>
       <div className="morseOutput">{wrapInSpans(message, "morse")}</div>
       <div className="messageOutput">{wrapInSpans(message, 'text')}</div>
+      <audio id="dash">
+        <source src="https://raw.githubusercontent.com/maxwellbenton/morse_news/master/src/assets/dash.m4a"></source>
+      </audio>
+      <audio id="dot">
+        <source src="https://raw.githubusercontent.com/maxwellbenton/morse_news/master/src/assets/dot.m4a"></source>
+      </audio>
     </div>
   );
 }
